@@ -81,7 +81,7 @@ colorToLum() {
 }
 
 order_list() {
-    colors=$1
+    colors=( "$@" )
     local count=0
     declare -A colors_lum
 
@@ -93,7 +93,7 @@ order_list() {
         #./generate_img.sh "#${color}" "$count"
     done
 
-    echo ${colors_lum[@]}
+    echo "${colors_lum[@]}"
 }
 
 black_or_white() {
@@ -106,10 +106,10 @@ black_or_white() {
 
     lum=${lums[$index]}
     echo $lum
-    if (( $(echo "$lum  > 294118" |bc -l) )); then
+    if (( $(echo "$lum  > 200000" |bc -l) )); then
         echo black
     fi
-    if (( $(echo "$lum  <= 294118" |bc -l) )); then
+    if (( $(echo "$lum  <= 200000" |bc -l) )); then
         echo light
     fi
 }
@@ -121,7 +121,7 @@ get_sorted_color() {
 
 function get_wall_colors() {
     wallpaper=$1
-    colors=($(convert "${wallpaper}" -scale 50x50! -depth 3 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
-    local colors_lum=($(order_list $colors))
-    echo ${colors_lum[@]}
+    local colors12=($(convert "${wallpaper}" -scale 50x50! -depth 3 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
+    local colors_lum12=$(order_list "${colors12[@]}")
+    echo -e  ${colors_lum12}  | sort -n | awk 'NR>1 {print $2}' | cut -d "#" -f 2
 }
