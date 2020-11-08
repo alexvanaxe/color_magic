@@ -13,11 +13,14 @@ fi
 
 echo $wallpaper
 
+
+colors_lum=($(get_wall_colors $wallpaper))
+
 #colors=($(convert "${wallpaper}" +dither -colors 15 -define histogram:unique-colors=true -format "%c" histogram:info: | grep -o "#......"))
 
-colors=($(convert "${wallpaper}" -scale 50x50! -depth 3 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
+#colors=($(convert "${wallpaper}" -scale 50x50! -depth 3 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
 
-colors_lum=($(order_list $colors))
+#colors_lum=($(order_list $colors))
 #order_list $colors
 
 #colors_hsv=($(convert "${wallpaper}" -format %c -depth 3 -colors 15 -colorspace HSL histogram:info:- | awk '{print $3,$4}' OFS="-" ORS="\n"))
