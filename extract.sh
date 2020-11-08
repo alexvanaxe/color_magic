@@ -13,9 +13,9 @@ fi
 
 echo $wallpaper
 
-colors=($(convert "${wallpaper}" +dither -colors 15 -define histogram:unique-colors=true -format "%c" histogram:info: | grep -o "#......"))
+#colors=($(convert "${wallpaper}" +dither -colors 15 -define histogram:unique-colors=true -format "%c" histogram:info: | grep -o "#......"))
 
-#colors=($(convert "${wallpaper}" -scale 50x50! -depth 3 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
+colors=($(convert "${wallpaper}" -scale 50x50! -depth 3 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
 
 colors_lum=($(order_list $colors))
 #order_list $colors

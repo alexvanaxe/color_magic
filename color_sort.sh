@@ -106,10 +106,10 @@ black_or_white() {
 
     lum=${lums[$index]}
     echo $lum
-    if (( $(echo "$lum  > 150" |bc -l) )); then
+    if (( $(echo "$lum  > 294118" |bc -l) )); then
         echo black
     fi
-    if (( $(echo "$lum  <= 150" |bc -l) )); then
+    if (( $(echo "$lum  <= 294118" |bc -l) )); then
         echo light
     fi
 }
