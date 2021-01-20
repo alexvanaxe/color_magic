@@ -97,20 +97,18 @@ order_list() {
 }
 
 black_or_white() {
-    colors=$1
+    local wallpaper=$1
+    local color=$(convert "${wallpaper}" -crop +0-500 -scale 1x1! -format "%c" histogram:info:- | grep -o "#......")
 
-    index=$2
-    
-    local colors_abc=($(order_list $colors))
-    lums=($(echo -e ${colors_lum[@]}  | sort -n | awk '{print $1}' | cut -d "#" -f 2))
 
-    lum=${lums[$index]}
-    echo $lum
-    if (( $(echo "$lum  > 200000" |bc -l) )); then
-        echo black
-    fi
-    if (( $(echo "$lum  <= 200000" |bc -l) )); then
-        echo light
+    local lum=$(colorToLum "${color}")
+
+    local lum="$(grep -oE "[[:digit:]]*" <<< "${lum}" | head -n 1)"
+
+    if [[ $lum -gt 65 ]]; then
+        echo "black"
+    else
+        echo "white"
     fi
 }
 
@@ -121,7 +119,8 @@ get_sorted_color() {
 
 function get_wall_colors() {
     wallpaper=$1
-    local colors12=($(convert "${wallpaper}" -scale 50x50! -depth 3 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
+    local colors12=($(convert "${wallpaper}" -scale 50x50! -depth 4 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
+    #local colors12=($(convert "${wallpaper}" +dither -colors 15 -define histogram:unique-colors=true -format "%c" histogram:info: | grep -o "#......"))
     local colors_lum12=$(order_list "${colors12[@]}")
     echo -e  ${colors_lum12}  | sort -n | awk 'NR>1 {print $2}' | cut -d "#" -f 2
 }

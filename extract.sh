@@ -14,7 +14,7 @@ fi
 echo $wallpaper
 
 
-colors_lum=($(get_wall_colors $wallpaper))
+colors_lum=($(get_wall_colors "$wallpaper"))
 
 
 colors_unsorted=($(convert "${wallpaper}" -scale 50x50! -depth 3 +dither -colors 15 -format "%c" histogram:info: | grep -o "#......"))
